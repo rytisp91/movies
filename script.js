@@ -1,6 +1,9 @@
 // GETS
 const mainContainer = document.getElementById('mainContainer')
+const infoContainer = document.getElementById('infoContainer')
+const back = document.getElementById('back')
 // LISTENERS
+back.addEventListener("click", goBack)
 
 // VARS
 const data = [
@@ -71,44 +74,62 @@ const data = [
 
 // FUNCTIONS
 
-data.map(item => {
-    let movieCard = document.createElement('div')
-    movieCard.setAttribute('class', 'movieCard')
+renderCards()
 
-    let poster = document.createElement('img')
-    poster.src = item.image
+function renderCards(){
 
-    let infoPart = document.createElement('div')
-    infoPart.setAttribute('class', 'infoPart')
+    mainContainer.innerHTML = ""
 
-    let name = document.createElement('h3')
-    name.innerText = item.title
+    data.map((item, index )=> {
+        let movieCard = document.createElement('div')
+        movieCard.setAttribute('class', 'movieCard')
+        movieCard.setAttribute('id', index)
+        movieCard.style.cursor = "pointer"
 
-    let year = document.createElement('h5')
-    year.innerText = item.year
+        let poster = document.createElement('img')
+        poster.src = item.image
 
-    let rating = document.createElement('h6')
-    rating.innerText = item.rating
+        let infoPart = document.createElement('div')
+        infoPart.setAttribute('class', 'infoPart')
 
-    let about = document.createElement('p')
-    about.innerText = item.description
+        let name = document.createElement('h2')
+        name.innerText = item.title
 
-    let comments = document.createElement('span')
-    comments.innerText = "Comment's"
-    comments.style.cursor = "pointer"
+        let year = document.createElement('h5')
+        year.innerText = item.year
 
-    comments.addEventListener('click', showCard)
+        let rating = document.createElement('h3')
+        rating.innerText = item.rating
 
-    mainContainer.appendChild(movieCard)
-    movieCard.appendChild(poster)
-    movieCard.appendChild(infoPart)
+        let about = document.createElement('p')
+        about.innerText = item.description
 
-    let movieInfo = [name, year, rating, about, comments]
-    movieInfo.map(item => {
-        infoPart.appendChild(item)
+        let comments = document.createElement('span')
+        comments.innerText = `Click on "movie card" to check comment's`
+
+        movieCard.addEventListener('click', showCard)
+
+        mainContainer.appendChild(movieCard)
+        movieCard.appendChild(poster)
+        movieCard.appendChild(infoPart)
+
+        let movieInfo = [name, year, rating, about, comments]
+        movieInfo.map(item => {
+            infoPart.appendChild(item)
+        })
     })
-})
+}
 
 function showCard(){
+    infoContainer.style.display = "block"
+    mainContainer.style.display = "none"
     console.log("No comment's")
 }
+
+function goBack(){
+    infoContainer.style.display = "none"
+    mainContainer.style.display = "flex"
+    renderCards()
+}
+
+
