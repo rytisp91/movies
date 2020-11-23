@@ -24,3 +24,13 @@ body {
 #infoContainer {
     display: none;
 }
+
+#movieInfo {
+    display: flex;
+}
+
+#movieInfo img {
+    width: 352px;
+    height: 468px;
+    margin-right: 30px;
+}

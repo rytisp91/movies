@@ -2,6 +2,7 @@
 const mainContainer = document.getElementById('mainContainer')
 const infoContainer = document.getElementById('infoContainer')
 const back = document.getElementById('back')
+const movieInfo = document.getElementById('movieInfo')
 // LISTENERS
 back.addEventListener("click", goBack)
 
@@ -71,16 +72,17 @@ const data = [
         }]
     },
 ]
+let movie
 
 // FUNCTIONS
 
 renderCards()
 
-function renderCards(){
+function renderCards() {
 
     mainContainer.innerHTML = ""
 
-    data.map((item, index )=> {
+    data.map((item, index) => {
         let movieCard = document.createElement('div')
         movieCard.setAttribute('class', 'movieCard')
         movieCard.setAttribute('id', index)
@@ -120,13 +122,47 @@ function renderCards(){
     })
 }
 
-function showCard(){
+function showCard(event) {
     infoContainer.style.display = "block"
     mainContainer.style.display = "none"
-    console.log("No comment's")
+
+    movieInfo.innerText = ""
+
+    data.map((item, index) => {
+        if (index === Number(event.path[1].id)) {
+            movie = item
+        }
+    })
+
+    let poster = document.createElement('img')
+    poster.src = movie.image
+
+    let infoSide = document.createElement('div')
+
+    let title = document.createElement('h1')
+    title.innerText = `Title: ${movie.title}`
+
+    let year = document.createElement('h3')
+    year.innerText = `Year: ${movie.year}`
+
+    let rating = document.createElement('h3')
+    rating.innerText = `Rating: ${movie.rating}`
+
+    let description = document.createElement('h2')
+    description.innerText = `Description: ${movie.description}`
+
+    movieInfo.appendChild(poster)
+    movieInfo.appendChild(infoSide)
+
+    let information = [title, year, rating, description]
+
+    information.map(item => {
+        infoSide.appendChild(item)
+    })
+
 }
 
-function goBack(){
+function goBack() {
     infoContainer.style.display = "none"
     mainContainer.style.display = "flex"
     renderCards()
