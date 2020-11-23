@@ -1,0 +1,18 @@
+#mainContainer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+}
+
+.movieCard {
+    display: flex;
+    border: dotted #2d4114 1px;
+    padding: 5px;
+    border-radius: 5px;
+    width: 350px;
+    margin: 15px;
+}
+
+.infoPart {
+    margin-left: 15px;
+}
