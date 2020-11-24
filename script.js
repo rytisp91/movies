@@ -2,9 +2,19 @@
 const mainContainer = document.getElementById('mainContainer')
 const infoContainer = document.getElementById('infoContainer')
 const back = document.getElementById('back')
-const movieInfo = document.getElementById('movieInfo')
+const addNew = document.getElementById('addNew')
+const addNewWindow = document.getElementById('addNewWindow')
+const image = document.getElementById('image')
+const title = document.getElementById('title')
+const year = document.getElementById('year')
+const rating = document.getElementById('rating')
+const description = document.getElementById('description')
+const submit = document.getElementById('submit')
+
 // LISTENERS
 back.addEventListener("click", goBack)
+addNew.addEventListener("click", addNewMovie)
+submit.addEventListener("click", submitNewMovie)
 
 // VARS
 let data = [
@@ -124,16 +134,13 @@ function renderCards() {
         let about = document.createElement('p')
         about.innerText = item.description
 
-        let comments = document.createElement('span')
-        comments.innerText = `Click on "movie card" to check comment's`
-
         movieCard.addEventListener('click', setCardId)
 
         mainContainer.appendChild(movieCard)
         movieCard.appendChild(poster)
         movieCard.appendChild(infoPart)
 
-        let movieInfo = [name, year, rating, about, comments]
+        let movieInfo = [name, year, rating, about]
         movieInfo.map(item => {
             infoPart.appendChild(item)
         })
@@ -146,10 +153,13 @@ function setCardId(event) {
 }
 
 function showCard(id) {
-    infoContainer.style.display = "block"
+    infoContainer.style.display = "flex"
     mainContainer.style.display = "none"
+    addNew.style.display = "none"
+    back.style.display = "block"
+    addNewWindow.style.display = "none"
 
-    movieInfo.innerText = ""
+    infoContainer.innerText = ""
 
     comments = document.createElement('div')
 
@@ -218,8 +228,8 @@ function showCard(id) {
     send.addEventListener("click", sendComment)
 
 
-    movieInfo.appendChild(poster)
-    movieInfo.appendChild(infoSide)
+    infoContainer.appendChild(poster)
+    infoContainer.appendChild(infoSide)
 
     let information = [title, year, rating, description, commentsInfo, comments, commentNameInput, commentInput, send]
 
@@ -232,6 +242,9 @@ function showCard(id) {
 function goBack() {
     infoContainer.style.display = "none"
     mainContainer.style.display = "flex"
+    back.style.display = "none"
+    addNew.style.display = "block"
+    addNewWindow.style.display = "none"
     renderCards()
 }
 
@@ -257,6 +270,38 @@ function deleteComment(event) {
     data[movieId].comments = data[movieId].comments.filter(x => x.id !== Number(event.target.id))
     indexing()
     showCard(movieId)
+}
+
+function addNewMovie() {
+    infoContainer.style.display = "none"
+    mainContainer.style.display = "none"
+    back.style.display = "block"
+    addNew.style.display = "none"
+    addNewWindow.style.display = "block"
+
+    image.value = ""
+    title.value = ""
+    year.value = ""
+    rating.value = ""
+    description.value = ""
+}
+
+function submitNewMovie() {
+
+    data.push({
+        image: `${image.value}`,
+        title: `${title.value}`,
+        year: `${year.value}`,
+        rating: `${rating.value}`,
+        description: `${description.value}`,
+        comments: [],
+    })
+    indexing()
+    renderCards()
+    mainContainer.style.display = "flex"
+    addNewWindow.style.display = "none"
+    addNew.style.display = "block"
+    back.style.display = "none"
 }
 
 
