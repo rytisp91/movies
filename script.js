@@ -151,10 +151,32 @@ function showCard(event) {
     let description = document.createElement('h2')
     description.innerText = `Description: ${movie.description}`
 
+    let commentsInfo = document.createElement('p')
+    if (movie.comments.length === 0) {
+        commentsInfo.innerText = "No comment's yet. Be the first!"
+    } else {
+        commentsInfo.innerText = "User's commentaries:"
+    }
+
+    let comments = document.createElement('div')
+
+    movie.comments.map(item=>{
+        let userName = document.createElement('span')
+        userName.innerText = `${item.name}:`
+
+        let comment = document.createElement('p')
+        comment.innerText = item.comment
+
+        comments.appendChild(userName)
+        comments.appendChild(comment)
+    })
+
+    let commentInput = document.createElement('input')
+
     movieInfo.appendChild(poster)
     movieInfo.appendChild(infoSide)
 
-    let information = [title, year, rating, description]
+    let information = [title, year, rating, description, commentsInfo, comments, commentInput]
 
     information.map(item => {
         infoSide.appendChild(item)
