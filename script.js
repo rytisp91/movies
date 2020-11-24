@@ -7,7 +7,7 @@ const movieInfo = document.getElementById('movieInfo')
 back.addEventListener("click", goBack)
 
 // VARS
-const data = [
+let data = [
     {
         image: "https://m.media-amazon.com/images/M/MV5BYWZjMjk3ZTItODQ2ZC00NTY5LWE0ZDYtZTI3MjcwN2Q5NTVkXkEyXkFqcGdeQXVyODk4OTc3MTY@._V1_UX182_CR0,0,182,268_AL_.jpg",
         title: "Parasite",
@@ -75,8 +75,22 @@ const data = [
 let movie
 let commentNameInput
 let commentInput
+let comments
+let movieId
 
 // FUNCTIONS
+indexing()
+
+function indexing() {
+    data.map((item, index) => {
+
+        item.id = index
+
+        item.comments.map((item, index) => {
+            item.id = index
+        })
+    })
+}
 
 renderCards()
 
@@ -84,14 +98,11 @@ function renderCards() {
 
     mainContainer.innerHTML = ""
 
-    data.map((item, index) => {
-
-        item.id = index
+    data.map(item => {
 
         let movieCard = document.createElement('div')
         movieCard.setAttribute('class', 'movieCard')
         movieCard.setAttribute('id', item.id)
-        movieCard.style.cursor = "pointer"
 
         let poster = document.createElement('img')
         poster.src = item.image
@@ -116,7 +127,7 @@ function renderCards() {
         let comments = document.createElement('span')
         comments.innerText = `Click on "movie card" to check comment's`
 
-        movieCard.addEventListener('click', showCard)
+        movieCard.addEventListener('click', setCardId)
 
         mainContainer.appendChild(movieCard)
         movieCard.appendChild(poster)
@@ -129,15 +140,23 @@ function renderCards() {
     })
 }
 
-function showCard(event) {
+function setCardId(event) {
+    let id = Number(event.target.id)
+    showCard(id)
+}
+
+function showCard(id) {
     infoContainer.style.display = "block"
     mainContainer.style.display = "none"
 
     movieInfo.innerText = ""
 
+    comments = document.createElement('div')
+
     data.map(item => {
-        if (item.id === Number(event.target.id))  {
+        if (item.id === id) {
             movie = item
+            movieId = movie.id
         }
     })
 
@@ -163,19 +182,27 @@ function showCard(event) {
         commentsInfo.innerText = "No comment's yet. Be the first!"
     } else {
         commentsInfo.innerText = "User's commentaries:"
+        comments.style.border = "1px black solid"
+        comments.style.marginBottom = "10px"
+        comments.style.padding = "5px"
     }
 
-    let comments = document.createElement('div')
-
     movie.comments.map(item => {
-        let userName = document.createElement('span')
-        userName.innerText = `${item.name}:`
+        let userName = document.createElement('p')
+        userName.innerText = `${item.name} says:`
 
         let comment = document.createElement('p')
         comment.innerText = item.comment
 
+        let removeBtn = document.createElement('button')
+        removeBtn.innerText = "Remove comment"
+        removeBtn.setAttribute(`id`, item.id)
+
         comments.appendChild(userName)
         comments.appendChild(comment)
+        comments.appendChild(removeBtn)
+
+        removeBtn.addEventListener("click", deleteComment)
     })
 
     commentNameInput = document.createElement('input')
@@ -189,6 +216,7 @@ function showCard(event) {
     send.innerText = "Send"
 
     send.addEventListener("click", sendComment)
+
 
     movieInfo.appendChild(poster)
     movieInfo.appendChild(infoSide)
@@ -207,14 +235,28 @@ function goBack() {
     renderCards()
 }
 
-function sendComment(event) {
-    let id = Number(event.target.id)
-    let index = data.findIndex(x => x.id === id)
-    data[index].comments.push({
-        name: commentNameInput.value,
-        comment: commentInput.value
-    })
-    showCard(event)
+function sendComment() {
+    if (commentNameInput.value.length === 0) {
+        alert(`Please enter your name`)
+    } else {
+        if (commentInput.value.length === 0) {
+            alert(`Please enter fill your comment`)
+        } else {
+            data.filter(x => x.id === data[movieId])
+            data[movieId].comments.push({
+                name: commentNameInput.value,
+                comment: commentInput.value
+            })
+            indexing()
+            showCard(movieId)
+        }
+    }
+}
+
+function deleteComment(event) {
+    data[movieId].comments = data[movieId].comments.filter(x => x.id !== Number(event.target.id))
+    indexing()
+    showCard(movieId)
 }
 
 
