@@ -14,7 +14,8 @@ const data = [
         year: "2019",
         rating: "8.6",
         description: "Greed and class discrimination threaten the newly formed symbiotic relationship between the wealthy Park family and the destitute Kim clan.",
-        comments: []
+        comments: [],
+        id: 1
     },
     {
         image: "https://m.media-amazon.com/images/M/MV5BM2EwMmRhMmUtMzBmMS00ZDQ3LTg4OGEtNjlkODk3ZTMxMmJlXkEyXkFqcGdeQXVyMjM5ODk1NDU@._V1_UX182_CR0,0,182,268_AL_.jpg",
@@ -25,7 +26,8 @@ const data = [
         comments: [{
             name: "John",
             comment: "So boring, i fall asleep to it and hibernated through whole winter"
-        }]
+        }],
+        id: 2
     },
     {
         image: "https://m.media-amazon.com/images/M/MV5BNGVjNWI4ZGUtNzE0MS00YTJmLWE0ZDctN2ZiYTk2YmI3NTYyXkEyXkFqcGdeQXVyMTkxNjUyNQ@@._V1_UX182_CR0,0,182,268_AL_.jpg",
@@ -42,7 +44,8 @@ const data = [
                 name: "Batman",
                 comment: "My parents was not impressed with this"
             },
-        ]
+        ],
+        id: 3
     },
     {
         image: "https://m.media-amazon.com/images/M/MV5BM2MyNjYxNmUtYTAwNi00MTYxLWJmNWYtYzZlODY3ZTk3OTFlXkEyXkFqcGdeQXVyNzkwMjQ5NzM@._V1_UY268_CR3,0,182,268_AL_.jpg",
@@ -50,7 +53,8 @@ const data = [
         year: "1972",
         rating: "9.2",
         description: "The aging patriarch of an organized crime dynasty transfers control of his clandestine empire to his reluctant son.",
-        comments: []
+        comments: [],
+        id: 4
     },
     {
         image: "https://m.media-amazon.com/images/M/MV5BNGNhMDIzZTUtNTBlZi00MTRlLWFjM2ItYzViMjE3YzI5MjljXkEyXkFqcGdeQXVyNzkwMjQ5NzM@._V1_UY268_CR1,0,182,268_AL_.jpg",
@@ -58,7 +62,8 @@ const data = [
         year: "1994",
         rating: "8.9",
         description: "The lives of two mob hitmen, a boxer, a gangster and his wife, and a pair of diner bandits intertwine in four tales of violence and redemption.",
-        comments: []
+        comments: [],
+        id: 5
     },
     {
         image: "https://m.media-amazon.com/images/M/MV5BZWFlYmY2MGEtZjVkYS00YzU4LTg0YjQtYzY1ZGE3NTA5NGQxXkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_UX182_CR0,0,182,268_AL_.jpg",
@@ -69,10 +74,13 @@ const data = [
         comments: [{
             name: "Jane",
             comment: "Soundtrack is epic"
-        }]
+        }],
+        id: 6
     },
 ]
 let movie
+let commentNameInput
+let commentInput
 
 // FUNCTIONS
 
@@ -82,17 +90,19 @@ function renderCards() {
 
     mainContainer.innerHTML = ""
 
-    data.map((item, index) => {
+    data.map(item => {
         let movieCard = document.createElement('div')
         movieCard.setAttribute('class', 'movieCard')
-        movieCard.setAttribute('id', index)
+        movieCard.setAttribute('id', item.id)
         movieCard.style.cursor = "pointer"
 
         let poster = document.createElement('img')
         poster.src = item.image
+        poster.style.pointerEvents = "none"
 
         let infoPart = document.createElement('div')
         infoPart.setAttribute('class', 'infoPart')
+        infoPart.style.pointerEvents = "none"
 
         let name = document.createElement('h2')
         name.innerText = item.title
@@ -128,8 +138,8 @@ function showCard(event) {
 
     movieInfo.innerText = ""
 
-    data.map((item, index) => {
-        if (index === Number(event.path[1].id)) {
+    data.map(item => {
+        if (item.id === Number(event.target.id))  {
             movie = item
         }
     })
@@ -160,7 +170,7 @@ function showCard(event) {
 
     let comments = document.createElement('div')
 
-    movie.comments.map(item=>{
+    movie.comments.map(item => {
         let userName = document.createElement('span')
         userName.innerText = `${item.name}:`
 
@@ -171,12 +181,22 @@ function showCard(event) {
         comments.appendChild(comment)
     })
 
-    let commentInput = document.createElement('input')
+    commentNameInput = document.createElement('input')
+    commentNameInput.placeholder = "Your name"
+
+    commentInput = document.createElement('input')
+    commentInput.placeholder = "Your comment"
+
+    let send = document.createElement('button')
+    send.setAttribute(`id`, movie.id)
+    send.innerText = "Send"
+
+    send.addEventListener("click", sendComment)
 
     movieInfo.appendChild(poster)
     movieInfo.appendChild(infoSide)
 
-    let information = [title, year, rating, description, commentsInfo, comments, commentInput]
+    let information = [title, year, rating, description, commentsInfo, comments, commentNameInput, commentInput, send]
 
     information.map(item => {
         infoSide.appendChild(item)
@@ -188,6 +208,16 @@ function goBack() {
     infoContainer.style.display = "none"
     mainContainer.style.display = "flex"
     renderCards()
+}
+
+function sendComment(event) {
+    let id = Number(event.target.id)
+    let index = data.findIndex(x => x.id === id)
+    data[index].comments.push({
+        name: commentNameInput.value,
+        comment: commentInput.value
+    })
+    showCard(event)
 }
 
 
