@@ -148,8 +148,8 @@ function renderCards() {
 }
 
 function setCardId(event) {
-    let id = Number(event.target.id)
-    showCard(id)
+    movieId = Number(event.target.id)
+    showCard(movieId)
 }
 
 function showCard(id) {
@@ -166,7 +166,6 @@ function showCard(id) {
     data.map(item => {
         if (item.id === id) {
             movie = item
-            movieId = movie.id
         }
     })
 
