@@ -15,7 +15,6 @@ const data = [
         rating: "8.6",
         description: "Greed and class discrimination threaten the newly formed symbiotic relationship between the wealthy Park family and the destitute Kim clan.",
         comments: [],
-        id: 1
     },
     {
         image: "https://m.media-amazon.com/images/M/MV5BM2EwMmRhMmUtMzBmMS00ZDQ3LTg4OGEtNjlkODk3ZTMxMmJlXkEyXkFqcGdeQXVyMjM5ODk1NDU@._V1_UX182_CR0,0,182,268_AL_.jpg",
@@ -27,7 +26,6 @@ const data = [
             name: "John",
             comment: "So boring, i fall asleep to it and hibernated through whole winter"
         }],
-        id: 2
     },
     {
         image: "https://m.media-amazon.com/images/M/MV5BNGVjNWI4ZGUtNzE0MS00YTJmLWE0ZDctN2ZiYTk2YmI3NTYyXkEyXkFqcGdeQXVyMTkxNjUyNQ@@._V1_UX182_CR0,0,182,268_AL_.jpg",
@@ -45,7 +43,6 @@ const data = [
                 comment: "My parents was not impressed with this"
             },
         ],
-        id: 3
     },
     {
         image: "https://m.media-amazon.com/images/M/MV5BM2MyNjYxNmUtYTAwNi00MTYxLWJmNWYtYzZlODY3ZTk3OTFlXkEyXkFqcGdeQXVyNzkwMjQ5NzM@._V1_UY268_CR3,0,182,268_AL_.jpg",
@@ -54,7 +51,6 @@ const data = [
         rating: "9.2",
         description: "The aging patriarch of an organized crime dynasty transfers control of his clandestine empire to his reluctant son.",
         comments: [],
-        id: 4
     },
     {
         image: "https://m.media-amazon.com/images/M/MV5BNGNhMDIzZTUtNTBlZi00MTRlLWFjM2ItYzViMjE3YzI5MjljXkEyXkFqcGdeQXVyNzkwMjQ5NzM@._V1_UY268_CR1,0,182,268_AL_.jpg",
@@ -63,7 +59,6 @@ const data = [
         rating: "8.9",
         description: "The lives of two mob hitmen, a boxer, a gangster and his wife, and a pair of diner bandits intertwine in four tales of violence and redemption.",
         comments: [],
-        id: 5
     },
     {
         image: "https://m.media-amazon.com/images/M/MV5BZWFlYmY2MGEtZjVkYS00YzU4LTg0YjQtYzY1ZGE3NTA5NGQxXkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_UX182_CR0,0,182,268_AL_.jpg",
@@ -75,7 +70,6 @@ const data = [
             name: "Jane",
             comment: "Soundtrack is epic"
         }],
-        id: 6
     },
 ]
 let movie
@@ -90,7 +84,10 @@ function renderCards() {
 
     mainContainer.innerHTML = ""
 
-    data.map(item => {
+    data.map((item, index) => {
+
+        item.id = index
+
         let movieCard = document.createElement('div')
         movieCard.setAttribute('class', 'movieCard')
         movieCard.setAttribute('id', item.id)
